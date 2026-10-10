@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dist-electron/
+release/
+work/
+test-results/
+playwright-report/
+*.db
+*.db-wal
+*.db-shm
+.env*
+!.env.example

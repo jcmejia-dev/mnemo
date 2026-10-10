@@ -1,0 +1,49 @@
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+export const workspaces = sqliteTable("workspaces", {
+  id: text().primaryKey(),
+  name: text().notNull(),
+  path: text().notNull().unique(),
+  environment: text().notNull(),
+  createdAt: text().notNull(),
+});
+export const memories = sqliteTable("memories", {
+  id: text().primaryKey(),
+  workspaceId: text()
+    .notNull()
+    .references(() => workspaces.id),
+  title: text().notNull(),
+  content: text().notNull(),
+  type: text().notNull(),
+  status: text().notNull(),
+  source: text().notNull(),
+  tags: text().notNull(),
+  createdAt: text().notNull(),
+  updatedAt: text().notNull(),
+  verifiedAt: text(),
+  version: integer().notNull(),
+  confidence: integer().notNull(),
+});
+export const migration = `
+CREATE TABLE IF NOT EXISTS schema_versions(version INTEGER PRIMARY KEY, appliedAt TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS workspaces(id TEXT PRIMARY KEY,name TEXT NOT NULL,path TEXT NOT NULL UNIQUE,environment TEXT NOT NULL,createdAt TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sessions(id TEXT PRIMARY KEY,workspaceId TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,externalId TEXT NOT NULL,title TEXT NOT NULL,provider TEXT NOT NULL,source TEXT NOT NULL,createdAt TEXT NOT NULL,updatedAt TEXT NOT NULL,messageCount INTEGER NOT NULL,tags TEXT NOT NULL,summary TEXT NOT NULL,UNIQUE(workspaceId,provider,externalId));
+CREATE TABLE IF NOT EXISTS messages(id TEXT PRIMARY KEY,sessionId TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,ordinal INTEGER NOT NULL,role TEXT NOT NULL,content TEXT NOT NULL,timestamp TEXT,hash TEXT NOT NULL,UNIQUE(sessionId,ordinal));
+CREATE TABLE IF NOT EXISTS memories(id TEXT PRIMARY KEY,workspaceId TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,title TEXT NOT NULL,content TEXT NOT NULL,type TEXT NOT NULL,status TEXT NOT NULL,source TEXT NOT NULL,tags TEXT NOT NULL,createdAt TEXT NOT NULL,updatedAt TEXT NOT NULL,verifiedAt TEXT,version INTEGER NOT NULL,confidence INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS revisions(id TEXT PRIMARY KEY,memoryId TEXT NOT NULL REFERENCES memories(id) ON DELETE CASCADE,version INTEGER NOT NULL,snapshot TEXT NOT NULL,createdAt TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS relationships(id TEXT PRIMARY KEY,workspaceId TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,fromId TEXT NOT NULL,toId TEXT NOT NULL,kind TEXT NOT NULL,UNIQUE(workspaceId,fromId,toId,kind));
+CREATE TABLE IF NOT EXISTS tasks(id TEXT PRIMARY KEY,workspaceId TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,objective TEXT NOT NULL,requirements TEXT NOT NULL,environment TEXT NOT NULL,status TEXT NOT NULL,evidence TEXT NOT NULL,blockers TEXT NOT NULL,updatedAt TEXT NOT NULL,sessionId TEXT,memoryIds TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS profiles(id TEXT PRIMARY KEY,workspaceId TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,name TEXT NOT NULL,instructions TEXT NOT NULL,tools TEXT NOT NULL,memoryTypes TEXT NOT NULL,verification TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS audit(id TEXT PRIMARY KEY,workspaceId TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE,action TEXT NOT NULL,entityId TEXT NOT NULL,detail TEXT NOT NULL,createdAt TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY,value TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS embeddings(memoryId TEXT PRIMARY KEY REFERENCES memories(id) ON DELETE CASCADE,model TEXT NOT NULL,contentHash TEXT NOT NULL,vector TEXT NOT NULL);
+CREATE VIRTUAL TABLE IF NOT EXISTS memory_fts USING fts5(title,content,tags,content='memories',content_rowid='rowid');
+CREATE TRIGGER IF NOT EXISTS memory_ai AFTER INSERT ON memories BEGIN INSERT INTO memory_fts(rowid,title,content,tags) VALUES(new.rowid,new.title,new.content,new.tags); END;
+CREATE TRIGGER IF NOT EXISTS memory_ad AFTER DELETE ON memories BEGIN INSERT INTO memory_fts(memory_fts,rowid,title,content,tags) VALUES('delete',old.rowid,old.title,old.content,old.tags); END;
+CREATE TRIGGER IF NOT EXISTS memory_au AFTER UPDATE ON memories BEGIN INSERT INTO memory_fts(memory_fts,rowid,title,content,tags) VALUES('delete',old.rowid,old.title,old.content,old.tags); INSERT INTO memory_fts(rowid,title,content,tags) VALUES(new.rowid,new.title,new.content,new.tags); END;
+CREATE INDEX IF NOT EXISTS session_workspace ON sessions(workspaceId,updatedAt DESC);
+CREATE INDEX IF NOT EXISTS memory_workspace ON memories(workspaceId,status,updatedAt DESC);
+CREATE INDEX IF NOT EXISTS message_session ON messages(sessionId,ordinal);
+CREATE INDEX IF NOT EXISTS relationship_workspace ON relationships(workspaceId);
+CREATE INDEX IF NOT EXISTS audit_workspace ON audit(workspaceId,createdAt DESC);
+INSERT OR IGNORE INTO schema_versions VALUES(1,datetime('now'));
+`;

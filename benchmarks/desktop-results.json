@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-10T12:07:24.368Z",
+  "runs": [
+    {
+      "storedMemories": 100,
+      "visibleNodes": 101,
+      "startupMs": 1950.2241000000004,
+      "graphReadyMs": 568.7890999999995,
+      "zoomAndHighlightMs": 274.2016999999996,
+      "scope": "Bounded 300-node view; not rendering the entire graph"
+    },
+    {
+      "storedMemories": 1000,
+      "visibleNodes": 300,
+      "startupMs": 1343.8040999999994,
+      "graphReadyMs": 664.2383,
+      "zoomAndHighlightMs": 381.8150000000005,
+      "scope": "Bounded 300-node view; not rendering the entire graph"
+    },
+    {
+      "storedMemories": 10000,
+      "visibleNodes": 300,
+      "startupMs": 1331.7803999999996,
+      "graphReadyMs": 650.3607999999986,
+      "zoomAndHighlightMs": 402.1806000000033,
+      "scope": "Bounded 300-node view; not rendering the entire graph"
+    }
+  ]
+}

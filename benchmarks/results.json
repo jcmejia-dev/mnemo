@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-10T12:07:33.806Z",
+  "host": {
+    "platform": "win32",
+    "release": "10.0.19045",
+    "cpu": "AMD Ryzen 5 4600G with Radeon Graphics",
+    "memoryGiB": 15.871295928955078,
+    "node": "v24.18.0"
+  },
+  "estimator": "ceil(UTF-8 bytes / 4), not a provider tokenizer",
+  "performance": [
+    {
+      "sessions": 100,
+      "memories": 100,
+      "indexingMs": 59.13810000000012,
+      "memoryIndexingMs": 75.79970000000003,
+      "keywordRetrievalP50Ms": 13.757100000000037,
+      "keywordRetrievalP95Ms": 19.26969999999983,
+      "sessionSearchMs": 1.8183000000001357,
+      "duplicateScanMs": 13.427699999999959,
+      "duplicates": 100,
+      "rssMiB": 290.3828125,
+      "contextTokens": 978
+    },
+    {
+      "sessions": 1000,
+      "memories": 1000,
+      "indexingMs": 486.98980000000006,
+      "memoryIndexingMs": 690.4969999999998,
+      "keywordRetrievalP50Ms": 38.85619999999972,
+      "keywordRetrievalP95Ms": 89.9345000000003,
+      "sessionSearchMs": 1.7975999999998749,
+      "duplicateScanMs": 89.07780000000002,
+      "duplicates": 1000,
+      "rssMiB": 304.125,
+      "contextTokens": 992
+    },
+    {
+      "sessions": 10000,
+      "memories": 10000,
+      "indexingMs": 8720.2177,
+      "memoryIndexingMs": 5806.370599999998,
+      "keywordRetrievalP50Ms": 168.9902000000002,
+      "keywordRetrievalP95Ms": 192.53849999999875,
+      "sessionSearchMs": 1.629000000000815,
+      "duplicateScanMs": 909.6074999999983,
+      "duplicates": 10000,
+      "rssMiB": 404.55078125,
+      "contextTokens": 992
+    }
+  ],
+  "context": [
+    {
+      "task": "authentication token expired",
+      "approach": "Full conversation",
+      "tokens": 6835,
+      "containsExpectedEvidence": true,
+      "missingCriticalConstraint": false,
+      "latencyMs": 0.07960000000093714,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    },
+    {
+      "task": "authentication token expired",
+      "approach": "Naive extractive summary",
+      "tokens": 64,
+      "containsExpectedEvidence": true,
+      "missingCriticalConstraint": false,
+      "latencyMs": 0.45539999999891734,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    },
+    {
+      "task": "authentication token expired",
+      "approach": "MNEMO retrieval",
+      "tokens": 84,
+      "containsExpectedEvidence": true,
+      "missingCriticalConstraint": false,
+      "latencyMs": 1.0024999999986903,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    },
+    {
+      "task": "sqlite database locked",
+      "approach": "Full conversation",
+      "tokens": 6835,
+      "containsExpectedEvidence": true,
+      "missingCriticalConstraint": false,
+      "latencyMs": 0.026699999998527346,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    },
+    {
+      "task": "sqlite database locked",
+      "approach": "Naive extractive summary",
+      "tokens": 64,
+      "containsExpectedEvidence": true,
+      "missingCriticalConstraint": false,
+      "latencyMs": 0.24469999999928405,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    },
+    {
+      "task": "sqlite database locked",
+      "approach": "MNEMO retrieval",
+      "tokens": 161,
+      "containsExpectedEvidence": true,
+      "missingCriticalConstraint": false,
+      "latencyMs": 1.1067000000002736,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    },
+    {
+      "task": "production migration approval",
+      "approach": "Full conversation",
+      "tokens": 6835,
+      "containsExpectedEvidence": true,
+      "missingCriticalConstraint": false,
+      "latencyMs": 0.038799999998445855,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    },
+    {
+      "task": "production migration approval",
+      "approach": "Naive extractive summary",
+      "tokens": 64,
+      "containsExpectedEvidence": false,
+      "missingCriticalConstraint": true,
+      "latencyMs": 0.16920000000027358,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    },
+    {
+      "task": "production migration approval",
+      "approach": "MNEMO retrieval",
+      "tokens": 95,
+      "containsExpectedEvidence": true,
+      "missingCriticalConstraint": false,
+      "latencyMs": 0.9075999999986379,
+      "answerCorrectness": "Not measured: no model was invoked",
+      "cost": "Not measured: no API call"
+    }
+  ]
+}

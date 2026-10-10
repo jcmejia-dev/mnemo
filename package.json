@@ -1,0 +1,102 @@
+{
+  "name": "mnemo",
+  "version": "0.1.0",
+  "description": "Local-first developer memory and terminal workspace",
+  "main": "dist-electron/main/bootstrap.cjs",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "node scripts/icon.mjs && tsc -p tsconfig.json && node scripts/build-main.mjs && vite build",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.renderer.json",
+    "lint": "eslint src tests scripts",
+    "test": "vitest run",
+    "test:e2e": "npm run build && playwright test",
+    "start": "electron .",
+    "benchmark": "npm run build && node scripts/benchmark.mjs",
+    "package": "npm run build && electron-builder --win nsis --x64",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build"
+  },
+  "keywords": [],
+  "author": "MNEMO contributors",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/server": "2.3.1",
+    "@radix-ui/react-focus-scope": "1.2.0",
+    "@xterm/addon-fit": "0.11.0",
+    "@xterm/addon-search": "0.16.0",
+    "@xterm/xterm": "6.0.0",
+    "@xyflow/react": "12.12.0",
+    "drizzle-orm": "0.45.4",
+    "lucide-react": "1.55.0",
+    "motion": "14.1.0",
+    "node-pty": "1.1.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.0",
+    "@resvg/resvg-js": "2.6.2",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "26.6.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3",
+    "esbuild": "0.28.2",
+    "eslint": "10.12.0",
+    "prettier": "3.9.10",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.1",
+    "vite": "8.3.4",
+    "vitest": "5.0.3"
+  },
+  "allowScripts": {
+    "node-pty@1.1.0": true,
+    "electron@44.7.0": true,
+    "esbuild@0.28.2": true
+  },
+  "build": {
+    "appId": "dev.mnemo.workspace",
+    "productName": "MNEMO",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json",
+      "assets/**/*",
+      "LICENSE"
+    ],
+    "asarUnpack": [
+      "node_modules/node-pty/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "signExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "artifactName": "MNEMO-${version}-${arch}-setup.${ext}",
+    "npmRebuild": false,
+    "icon": "assets/icon.ico"
+  },
+  "overrides": {
+    "global-agent": "4.1.3"
+  }
+}
